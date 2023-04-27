@@ -11,6 +11,27 @@ router.get('/', async (req, res) => {
     axios.get(END_POINT)
         .then(function (response) {
             console.log(response.data.results)
+            res.render('auth/signin.hbs', {
+                data: response.data.results,
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.render('auth/signin.hbs', {
+                error,
+                data: [],
+            })
+        });
+})
+
+router.get('/characters', async (req, res) => {
+    const a = "Hello World"
+
+    const END_POINT = "https://rickandmortyapi.com/api/character"
+
+    axios.get(END_POINT)
+        .then(function (response) {
+            console.log(response.data.results)
             res.render('index.hbs', {
                 data: response.data.results,
             })
