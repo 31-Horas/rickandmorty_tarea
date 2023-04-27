@@ -12,14 +12,56 @@ router.get('/', async (req, res) => {
         .then(function (response) {
             console.log(response.data.results)
             res.render('index.hbs', {
-                data: response.data.results, 
+                data: response.data.results,
             })
         })
         .catch(function (error) {
             console.log(error);
             res.render('index.hbs', {
                 error,
-                data: [], 
+                data: [],
+            })
+        });
+})
+
+router.get('/locations', async (req, res) => {
+    const a = "Hello World"
+
+    const END_POINT = "https://rickandmortyapi.com/api/location"
+
+    axios.get(END_POINT)
+        .then(function (response) {
+            console.log(response.data.results)
+            res.render('location.hbs', {
+                data: response.data.results,
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.render('location.hbs', {
+                error,
+                data: [],
+            })
+        });
+})
+
+router.get('/episodes', async (req, res) => {
+    const a = "Hello World"
+
+    const END_POINT = "https://rickandmortyapi.com/api/episode"
+
+    axios.get(END_POINT)
+        .then(function (response) {
+            console.log(response.data.results)
+            res.render('episode.hbs', {
+                data: response.data.results,
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+            res.render('episode.hbs', {
+                error,
+                data: [],
             })
         });
 })
