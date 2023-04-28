@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { isLoggedIn, isNotLoggedIn } = require('../lib/auth');
+const { isLoggedIn, isNotLoggedIn, isNotSignedUp } = require('../lib/auth');
 const { encryptPassword, matchPassword } = require('../lib/helpers')
 
 const pool = require('../database');
@@ -14,6 +14,18 @@ router.post('/signin', isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local.signin', {
         successRedirect: '/profile',
         failureRedirect: '/signin',
+        failureFlash: true
+    })(req, res, next)
+})
+
+router.get('/signup', isNotSignedUp, (req, res) => {
+    res.render('auth/signup')
+})
+
+router.post('/signup', isNotSignedUp, (req, res, next) => {
+    passport.authenticate('local.signup', {
+        successRedirect: '/login',
+        failureRedirect: '/signup',
         failureFlash: true
     })(req, res, next)
 })
