@@ -1,51 +1,33 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router()
-const { isLoggedIn } = require('../lib/auth');
+const { isLoggedIn, isNotLoggedIn, isNotSignedUp } = require('../lib/auth');
 
 router.get('/', async (req, res) => {
-    const a = "Hello World"
+    res.render('auth/signin.hbs')
+})
+
+router.get('/characters', isLoggedIn, async (req, res) => {
 
     const END_POINT = "https://rickandmortyapi.com/api/character"
 
     axios.get(END_POINT)
         .then(function (response) {
             console.log(response.data.results)
-            res.render('auth/signin.hbs', {
+            res.render('characters.hbs', {
                 data: response.data.results,
             })
         })
         .catch(function (error) {
             console.log(error);
-            res.render('auth/signin.hbs', {
+            res.render('characters.hbs', {
                 error,
                 data: [],
             })
         });
 })
 
-router.get('/characters', async (req, res) => {
-    const a = "Hello World"
-
-    const END_POINT = "https://rickandmortyapi.com/api/character"
-
-    axios.get(END_POINT)
-        .then(function (response) {
-            console.log(response.data.results)
-            res.render('index.hbs', {
-                data: response.data.results,
-            })
-        })
-        .catch(function (error) {
-            console.log(error);
-            res.render('index.hbs', {
-                error,
-                data: [],
-            })
-        });
-})
-
-router.get('/locations', async (req, res) => {
+router.get('/locations', isLoggedIn, async (req, res) => {
     const a = "Hello World"
 
     const END_POINT = "https://rickandmortyapi.com/api/location"
@@ -66,7 +48,7 @@ router.get('/locations', async (req, res) => {
         });
 })
 
-router.get('/episodes', async (req, res) => {
+router.get('/episodes', isLoggedIn, async (req, res) => {
     const a = "Hello World"
 
     const END_POINT = "https://rickandmortyapi.com/api/episode"
@@ -85,6 +67,7 @@ router.get('/episodes', async (req, res) => {
                 data: [],
             })
         });
-})
+});
+
 
 module.exports = router

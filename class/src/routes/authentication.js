@@ -24,7 +24,7 @@ router.get('/signup', isNotSignedUp, (req, res) => {
 
 router.post('/signup', isNotSignedUp, (req, res, next) => {
     passport.authenticate('local.signup', {
-        successRedirect: '/login',
+        successRedirect: '/signin',
         failureRedirect: '/signup',
         failureFlash: true
     })(req, res, next)
@@ -36,6 +36,7 @@ router.get('/profile', isLoggedIn, (req, res) => {
 
 router.get('/logout', isLoggedIn, (req, res) => {
     req.logOut();
+    req.session.destroy();
     res.redirect('/signin');
 })
 
@@ -52,6 +53,10 @@ router.post('/change-password', isLoggedIn, async (req, res) => {
         req.flash('success', 'Contraseña actualizada correctamente');
         res.redirect('/profile')
     }
+})
+
+router.get('/characters', isLoggedIn, async(req, res) => {
+    res.render('characters')
 })
 
 module.exports = router;

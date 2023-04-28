@@ -3,9 +3,9 @@ module.exports = {
     isLoggedIn(req, res, next) {
         if (req.isAuthenticated()) {
             return next();
-        } else {
-            res.redirect('/signin');
         }
+        res.redirect('/signin');
+    
     },
 
     isNotLoggedIn(req, res, next) {
@@ -20,7 +20,7 @@ module.exports = {
         if (!req.isAuthenticated()) {
             return next();
         } else {
-            res.redirect('/login');
+            res.redirect('/signup');
         }
     }
 }
