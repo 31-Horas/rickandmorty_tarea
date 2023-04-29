@@ -9,7 +9,7 @@ passport.use('local.signin', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
 }, async (req, username, password, done) => {
-    const rows = await pool.query("SELECT * FROM User WHERE BINARY username = ?", [username])
+    const rows = await pool.query("SELECT * FROM user WHERE BINARY username = ?", [username])
     if (rows.length > 0) {
         const user = rows[0];
         const validPassword = await matchPassword(password, user.password)
@@ -35,7 +35,7 @@ passport.use('local.signup', new LocalStrategy({
         password
     };
     newUser.password = await encryptPassword(password);
-    const result = await pool.query('INSERT INTO User SET ?', [newUser]);
+    const result = await pool.query('INSERT INTO user SET ?', [newUser]);
     newUser.id = result.insertId;
     return done(null, newUser);
 })); 
@@ -46,6 +46,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-    const rows = await pool.query('SELECT * FROM User WHERE id = ?', [id]);
+    const rows = await pool.query('SELECT * FROM user WHERE id = ?', [id]);
     done(null, rows[0]);
 });
